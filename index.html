@@ -152,11 +152,12 @@
     .hero-headline {
       font-family: 'Space Mono', monospace;
       font-weight: 700;
-      font-size: clamp(28px, 4.5vw, 58px);
+      font-size: clamp(18px, 2vw, 26px);
       color: var(--text);
-      max-width: 680px;
+      white-space: nowrap;
       margin-bottom: 16px;
-      line-height: 1.45;
+      line-height: 1.4;
+      overflow: hidden;
     }
     .hero-subline {
       font-family: 'Space Mono', monospace;
@@ -636,7 +637,7 @@
   <section id="hero" class="dot-grid">
     <div class="hero-glow"></div>
     <div class="hero-wordmark">FUSE<span>BOX</span></div>
-    <p class="hero-headline">Autonomous Engineering.</p>
+    <p class="hero-headline" id="hero-headline"></p>
     <p class="hero-subline">FROM BACKLOG TO COMMIT. AUTOMATICALLY.</p>
     <div class="hero-ctas">
       <a href="#cta" class="btn-orange">Join Waitlist →</a>
@@ -885,6 +886,34 @@
       }, { threshold: 0.3 });
       observer.observe(pipelineSection);
     }
+  </script>
+
+  <script>
+    // Typewriter for hero headline
+    const headline = document.getElementById('hero-headline');
+    const text = 'Autonomous Engineering.';
+    let i = 0;
+    function typeHeadline() {
+      if (i <= text.length) {
+        headline.textContent = text.slice(0, i) + (i < text.length ? '|' : '');
+        i++;
+        setTimeout(typeHeadline, i === text.length ? 0 : 55);
+      } else {
+        // Remove cursor
+        headline.textContent = text;
+        // Fade in subline and CTAs
+        const subline = document.querySelector('.hero-subline');
+        const actions = document.querySelector('.hero-actions');
+        if (subline) { subline.style.opacity = '0'; subline.style.transition = 'opacity 0.5s'; setTimeout(() => subline.style.opacity = '1', 100); }
+        if (actions) { actions.style.opacity = '0'; actions.style.transition = 'opacity 0.5s'; setTimeout(() => actions.style.opacity = '1', 400); }
+      }
+    }
+    // Hide subline and actions initially
+    const subline = document.querySelector('.hero-subline');
+    const actions = document.querySelector('.hero-actions');
+    if (subline) subline.style.opacity = '0';
+    if (actions) actions.style.opacity = '0';
+    setTimeout(typeHeadline, 600);
   </script>
 </body>
 </html>
