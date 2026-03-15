@@ -742,49 +742,73 @@
   <!-- 03 CONFIGURE -->
   <section id="configure">
     <div class="container">
-      <div class="configure-inner">
-        <div>
-          <div class="section-label"><span class="num">03</span> CONFIGURE</div>
-          <h2 class="section-title">The right model<br/>for the right job.</h2>
-          <p class="section-hook">"The right model for the right job."</p>
-          <p class="section-body">Not every step needs the most powerful model. Choose which AI runs each stage — optimize for speed, cost, or precision. It runs how you set it. Every time.</p>
+      <div class="section-label"><span class="num">03</span> CONFIGURE</div>
+      <h2 class="section-title">The right model<br/>for the right job.</h2>
+      <p class="section-desc">Not every step needs the most powerful model. Choose which AI runs each stage — optimize for speed, cost, or precision. It runs how you set it. Every time.</p>
+
+      <div class="model-table">
+        <div class="model-row">
+          <span class="model-row-label">Diagnose</span>
+          <div class="model-toggles">
+            <button class="model-toggle" data-model="claude"><span class="tog-dot"></span>Claude</button>
+            <button class="model-toggle active" data-model="gemini"><span class="tog-dot"></span>Gemini</button>
+            <button class="model-toggle" data-model="codex"><span class="tog-dot"></span>Codex</button>
+          </div>
         </div>
-        <div class="model-table">
-          <div class="model-table-header">
-            <span>STAGE</span>
-            <span>MODEL</span>
+        <div class="model-row">
+          <span class="model-row-label">Plan</span>
+          <div class="model-toggles">
+            <button class="model-toggle" data-model="claude"><span class="tog-dot"></span>Claude</button>
+            <button class="model-toggle active" data-model="gemini"><span class="tog-dot"></span>Gemini</button>
+            <button class="model-toggle" data-model="codex"><span class="tog-dot"></span>Codex</button>
           </div>
-          <div class="model-row">
-            <span class="model-stage">DIAGNOSE</span>
-            <select class="model-select"><option>Claude 3.5 Sonnet</option><option>GPT-4o</option><option>Gemini 1.5 Pro</option><option>Codex</option></select>
+        </div>
+        <div class="model-row">
+          <span class="model-row-label">Implement</span>
+          <div class="model-toggles">
+            <button class="model-toggle active" data-model="claude"><span class="tog-dot"></span>Claude</button>
+            <button class="model-toggle" data-model="gemini"><span class="tog-dot"></span>Gemini</button>
+            <button class="model-toggle" data-model="codex"><span class="tog-dot"></span>Codex</button>
           </div>
-          <div class="model-row">
-            <span class="model-stage">PLAN</span>
-            <select class="model-select"><option>Claude 3.5 Sonnet</option><option>GPT-4o</option><option>Gemini 1.5 Pro</option><option>Codex</option></select>
+        </div>
+        <div class="model-row">
+          <span class="model-row-label">Review</span>
+          <div class="model-toggles">
+            <button class="model-toggle" data-model="claude"><span class="tog-dot"></span>Claude</button>
+            <button class="model-toggle active" data-model="gemini"><span class="tog-dot"></span>Gemini</button>
+            <button class="model-toggle" data-model="codex"><span class="tog-dot"></span>Codex</button>
           </div>
-          <div class="model-row">
-            <span class="model-stage">IMPLEMENT</span>
-            <select class="model-select"><option selected>Codex</option><option>Claude 3.5 Sonnet</option><option>GPT-4o</option><option>Gemini 1.5 Pro</option></select>
+        </div>
+        <div class="model-row">
+          <span class="model-row-label">Test</span>
+          <div class="model-toggles">
+            <button class="model-toggle" data-model="claude"><span class="tog-dot"></span>Claude</button>
+            <button class="model-toggle" data-model="gemini"><span class="tog-dot"></span>Gemini</button>
+            <button class="model-toggle active" data-model="codex"><span class="tog-dot"></span>Codex</button>
           </div>
-          <div class="model-row">
-            <span class="model-stage">REVIEW</span>
-            <select class="model-select"><option>GPT-4o</option><option>Claude 3.5 Sonnet</option><option selected>Gemini 1.5 Flash</option><option>Codex</option></select>
+        </div>
+        <div class="model-row">
+          <span class="model-row-label">Security</span>
+          <div class="model-toggles">
+            <button class="model-toggle" data-model="claude"><span class="tog-dot"></span>Claude</button>
+            <button class="model-toggle" data-model="gemini"><span class="tog-dot"></span>Gemini</button>
+            <button class="model-toggle active" data-model="codex"><span class="tog-dot"></span>Codex</button>
           </div>
-          <div class="model-row">
-            <span class="model-stage">TEST</span>
-            <select class="model-select"><option selected>Codex</option><option>Claude 3.5 Sonnet</option><option>GPT-4o</option><option>Gemini 1.5 Pro</option></select>
+        </div>
+        <div class="model-row">
+          <span class="model-row-label">Commit</span>
+          <div class="model-toggles">
+            <button class="model-toggle active" data-model="claude"><span class="tog-dot"></span>Claude</button>
+            <button class="model-toggle" data-model="gemini"><span class="tog-dot"></span>Gemini</button>
+            <button class="model-toggle" data-model="codex"><span class="tog-dot"></span>Codex</button>
           </div>
-          <div class="model-row">
-            <span class="model-stage">SECURITY</span>
-            <select class="model-select"><option>Claude 3.5 Sonnet</option><option selected>GPT-4o</option><option>Gemini 1.5 Pro</option><option>Codex</option></select>
-          </div>
-          <div class="model-row">
-            <span class="model-stage">COMMIT</span>
-            <select class="model-select"><option selected>Gemini 1.5 Flash</option><option>Claude 3.5 Sonnet</option><option>GPT-4o</option><option>Codex</option></select>
-          </div>
-          <div class="model-row">
-            <span class="model-stage">SUMMARIZE</span>
-            <select class="model-select"><option selected>Gemini 1.5 Flash</option><option>Claude 3.5 Sonnet</option><option>GPT-4o</option><option>Codex</option></select>
+        </div>
+        <div class="model-row">
+          <span class="model-row-label">Summarize</span>
+          <div class="model-toggles">
+            <button class="model-toggle active" data-model="claude"><span class="tog-dot"></span>Claude</button>
+            <button class="model-toggle" data-model="gemini"><span class="tog-dot"></span>Gemini</button>
+            <button class="model-toggle" data-model="codex"><span class="tog-dot"></span>Codex</button>
           </div>
         </div>
       </div>
@@ -853,6 +877,17 @@
   </footer>
 
 
+  <script>
+    // Model toggle interaction
+    document.querySelectorAll('.model-toggles').forEach(group => {
+      group.querySelectorAll('.model-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+          group.querySelectorAll('.model-toggle').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+      });
+    });
+  </script>
   <script>
     // Pipeline animation
     const stages = document.querySelectorAll('.pipe-node');
