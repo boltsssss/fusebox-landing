@@ -1026,19 +1026,23 @@
     audio.addEventListener('play', () => setPlaying(true));
     audio.addEventListener('pause', () => setPlaying(false));
 
-    // Unmute on first interaction (browsers allow muted autoplay)
+    // Unmute on first interaction
     let unmuted = false;
     function onInteract() {
       if (!unmuted) {
         unmuted = true;
         audio.muted = false;
-        if (audio.paused) tryPlay();
-        setPlaying(true);
+        audio.play().then(() => setPlaying(true)).catch(() => {});
       }
     }
-    ['click','scroll','touchstart','mousemove'].forEach(e =>
-      document.addEventListener(e, onInteract, { once: true })
-    );
+    // Use reliable gesture events — click, scroll, touch
+    document.addEventListener('click', onInteract);
+    document.addEventListener('scroll', onInteract);
+    document.addEventListener('touchstart', onInteract);
+    // mousemove only on desktop after a small delay (feels more immediate)
+    setTimeout(() => {
+      document.addEventListener('mousemove', onInteract, { once: true });
+    }, 300);
 
     player.addEventListener('click', (e) => {
       e.stopPropagation();
