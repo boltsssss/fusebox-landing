@@ -380,6 +380,20 @@
     }
 
 
+
+    .configure-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: clamp(40px, 5vw, 80px);
+      align-items: start;
+      margin-top: 20px;
+    }
+    .configure-left .section-title { margin-top: 0; }
+    .configure-right .model-table { margin-top: 0; }
+    @media (max-width: 768px) {
+      .configure-layout { grid-template-columns: 1fr; }
+    }
+
     .model-row-label {
       font-family: 'Inter', sans-serif;
       font-size: 14px;
@@ -760,40 +774,46 @@
   <section id="configure">
     <div class="container">
       <div class="section-label"><span class="num">03</span> CONFIGURE</div>
-      <h2 class="section-title">The right model<br/>for the right job.</h2>
-      <p class="section-desc">Not every step needs the most powerful model. Choose which AI runs each stage — optimize for speed, cost, or precision. It runs how you set it. Every time.</p>
-      <div class="model-table">
-        <div class="model-row">
-          <span class="model-row-label">Diagnose</span>
-          <div class="model-toggles"><button class="model-toggle active" data-model="claude">Claude</button><button class="model-toggle" data-model="gemini">Gemini</button><button class="model-toggle" data-model="codex">Codex</button></div>
+      <div class="configure-layout">
+        <div class="configure-left">
+          <h2 class="section-title">The right model<br/>for the right job.</h2>
+          <p class="section-desc">Not every step needs the most powerful model. Choose which AI runs each stage — optimize for speed, cost, or precision. It runs how you set it. Every time.</p>
         </div>
-        <div class="model-row">
-          <span class="model-row-label">Plan</span>
-          <div class="model-toggles"><button class="model-toggle" data-model="claude">Claude</button><button class="model-toggle active" data-model="gemini">Gemini</button><button class="model-toggle" data-model="codex">Codex</button></div>
-        </div>
-        <div class="model-row">
-          <span class="model-row-label">Implement</span>
-          <div class="model-toggles"><button class="model-toggle active" data-model="claude">Claude</button><button class="model-toggle" data-model="gemini">Gemini</button><button class="model-toggle" data-model="codex">Codex</button></div>
-        </div>
-        <div class="model-row">
-          <span class="model-row-label">Review</span>
-          <div class="model-toggles"><button class="model-toggle" data-model="claude">Claude</button><button class="model-toggle active" data-model="gemini">Gemini</button><button class="model-toggle" data-model="codex">Codex</button></div>
-        </div>
-        <div class="model-row">
-          <span class="model-row-label">Test</span>
-          <div class="model-toggles"><button class="model-toggle" data-model="claude">Claude</button><button class="model-toggle" data-model="gemini">Gemini</button><button class="model-toggle active" data-model="codex">Codex</button></div>
-        </div>
-        <div class="model-row">
-          <span class="model-row-label">Security</span>
-          <div class="model-toggles"><button class="model-toggle" data-model="claude">Claude</button><button class="model-toggle" data-model="gemini">Gemini</button><button class="model-toggle active" data-model="codex">Codex</button></div>
-        </div>
-        <div class="model-row">
-          <span class="model-row-label">Commit</span>
-          <div class="model-toggles"><button class="model-toggle active" data-model="claude">Claude</button><button class="model-toggle" data-model="gemini">Gemini</button><button class="model-toggle" data-model="codex">Codex</button></div>
-        </div>
-        <div class="model-row">
-          <span class="model-row-label">Summarize</span>
-          <div class="model-toggles"><button class="model-toggle active" data-model="claude">Claude</button><button class="model-toggle" data-model="gemini">Gemini</button><button class="model-toggle" data-model="codex">Codex</button></div>
+        <div class="configure-right">
+          <div class="model-table">
+            <div class="model-row">
+              <span class="model-row-label">Diagnose</span>
+              <div class="model-toggles"><button class="model-toggle" data-model="claude">Claude</button><button class="model-toggle active" data-model="gemini">Gemini</button><button class="model-toggle" data-model="codex">Codex</button></div>
+            </div>
+            <div class="model-row">
+              <span class="model-row-label">Plan</span>
+              <div class="model-toggles"><button class="model-toggle active" data-model="claude">Claude</button><button class="model-toggle" data-model="gemini">Gemini</button><button class="model-toggle" data-model="codex">Codex</button></div>
+            </div>
+            <div class="model-row">
+              <span class="model-row-label">Implement</span>
+              <div class="model-toggles"><button class="model-toggle active" data-model="claude">Claude</button><button class="model-toggle" data-model="gemini">Gemini</button><button class="model-toggle" data-model="codex">Codex</button></div>
+            </div>
+            <div class="model-row">
+              <span class="model-row-label">Review</span>
+              <div class="model-toggles"><button class="model-toggle" data-model="claude">Claude</button><button class="model-toggle active" data-model="gemini">Gemini</button><button class="model-toggle" data-model="codex">Codex</button></div>
+            </div>
+            <div class="model-row">
+              <span class="model-row-label">Test</span>
+              <div class="model-toggles"><button class="model-toggle" data-model="claude">Claude</button><button class="model-toggle" data-model="gemini">Gemini</button><button class="model-toggle active" data-model="codex">Codex</button></div>
+            </div>
+            <div class="model-row">
+              <span class="model-row-label">Security</span>
+              <div class="model-toggles"><button class="model-toggle" data-model="claude">Claude</button><button class="model-toggle" data-model="gemini">Gemini</button><button class="model-toggle active" data-model="codex">Codex</button></div>
+            </div>
+            <div class="model-row">
+              <span class="model-row-label">Commit</span>
+              <div class="model-toggles"><button class="model-toggle active" data-model="claude">Claude</button><button class="model-toggle" data-model="gemini">Gemini</button><button class="model-toggle" data-model="codex">Codex</button></div>
+            </div>
+            <div class="model-row">
+              <span class="model-row-label">Summarize</span>
+              <div class="model-toggles"><button class="model-toggle active" data-model="claude">Claude</button><button class="model-toggle" data-model="gemini">Gemini</button><button class="model-toggle" data-model="codex">Codex</button></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
