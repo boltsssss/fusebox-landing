@@ -1004,7 +1004,7 @@
     </div>
     <span class="ambient-label" id="ambientLabel">AMBIENT</span>
   </div>
-  <audio id="ambientAudio" src="ambient-clip.mp3" preload="auto"></audio>
+  <audio id="ambientAudio" src="ambient-clip.mp3" preload="auto" autoplay loop></audio>
   <script>
     const audio = document.getElementById('ambientAudio');
     const player = document.getElementById('ambientPlayer');
@@ -1022,18 +1022,21 @@
       audio.play().then(() => setPlaying(true)).catch(() => {});
     }
 
-    // Autoplay on first interaction
+    // Reflect initial autoplay state
+    audio.addEventListener('play', () => setPlaying(true));
+    audio.addEventListener('pause', () => setPlaying(false));
+
+    // Fallback: trigger on first interaction if browser blocked autoplay
     let triggered = false;
     function onInteract() {
-      if (!triggered) { triggered = true; tryPlay(); }
+      if (!triggered && audio.paused) { triggered = true; tryPlay(); }
     }
     ['click','scroll','touchstart'].forEach(e => document.addEventListener(e, onInteract));
-    tryPlay(); // attempt immediate autoplay
 
     player.addEventListener('click', (e) => {
       e.stopPropagation();
       triggered = true;
-      if (audio.paused) { tryPlay(); } else { audio.pause(); setPlaying(false); }
+      if (audio.paused) { tryPlay(); } else { audio.pause(); }
     });
   </script>
 </body>
