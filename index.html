@@ -1004,7 +1004,7 @@
     </div>
     <span class="ambient-label" id="ambientLabel">AMBIENT</span>
   </div>
-  <audio id="ambientAudio" src="ambient-clip.mp3" preload="auto" autoplay loop></audio>
+  <audio id="ambientAudio" src="ambient-clip.mp3" preload="auto" autoplay loop muted></audio>
   <script>
     const audio = document.getElementById('ambientAudio');
     const player = document.getElementById('ambientPlayer');
@@ -1026,12 +1026,19 @@
     audio.addEventListener('play', () => setPlaying(true));
     audio.addEventListener('pause', () => setPlaying(false));
 
-    // Fallback: trigger on first interaction if browser blocked autoplay
-    let triggered = false;
+    // Unmute on first interaction (browsers allow muted autoplay)
+    let unmuted = false;
     function onInteract() {
-      if (!triggered && audio.paused) { triggered = true; tryPlay(); }
+      if (!unmuted) {
+        unmuted = true;
+        audio.muted = false;
+        if (audio.paused) tryPlay();
+        setPlaying(true);
+      }
     }
-    ['click','scroll','touchstart'].forEach(e => document.addEventListener(e, onInteract));
+    ['click','scroll','touchstart','mousemove'].forEach(e =>
+      document.addEventListener(e, onInteract, { once: true })
+    );
 
     player.addEventListener('click', (e) => {
       e.stopPropagation();
