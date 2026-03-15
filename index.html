@@ -1004,7 +1004,7 @@
     </div>
     <span class="ambient-label" id="ambientLabel">AMBIENT</span>
   </div>
-  <audio id="ambientAudio" loop>
+  <audio id="ambientAudio" preload="auto">
     <source src="ambient.mp3" type="audio/mpeg">
   </audio>
   <script>
@@ -1015,47 +1015,64 @@
     const label = document.getElementById('ambientLabel');
     const START = 244; // 4:04
     const END = 280;   // 4:40
+    let seeked = false;
+    let playing = false;
 
-    audio.addEventListener('loadedmetadata', () => {
-      audio.currentTime = START;
-      console.log('Audio loaded, duration:', audio.duration, 'start:', START);
+    function setPlaying(active) {
+      playing = active;
+      player.classList.toggle('playing', active);
+      iconPlay.style.display = active ? 'none' : 'block';
+      iconPause.style.display = active ? 'block' : 'none';
+      label.textContent = active ? 'PLAYING' : 'AMBIENT';
+    }
+
+    function tryPlay() {
+      if (!seeked) {
+        audio.currentTime = START;
+      }
+      audio.play().then(() => setPlaying(true)).catch(() => {});
+    }
+
+    audio.addEventListener('canplay', () => {
+      if (!seeked) {
+        audio.currentTime = START;
+        seeked = true;
+      }
     });
+
+    audio.addEventListener('seeked', () => {
+      seeked = true;
+    });
+
     audio.addEventListener('timeupdate', () => {
-      if (audio.currentTime >= END || audio.currentTime < START - 1) {
+      if (seeked && audio.currentTime >= END) {
         audio.currentTime = START;
       }
     });
 
-    function startPlay() {
-      audio.play().then(() => {
-        player.classList.add('playing');
-        iconPlay.style.display = 'none';
-        iconPause.style.display = 'block';
-        label.textContent = 'PLAYING';
-      }).catch(() => {});
+    // Autoplay on first interaction since browsers block direct autoplay
+    let interacted = false;
+    function onFirstInteract() {
+      if (!interacted) {
+        interacted = true;
+        tryPlay();
+      }
     }
+    ['click','scroll','touchstart','keydown'].forEach(e => {
+      document.addEventListener(e, onFirstInteract, { once: false });
+    });
 
-    // Try autoplay immediately; if blocked, start on first interaction
-    window.addEventListener('load', () => {
-      startPlay();
-    });
-    ['click','scroll','keydown','touchstart'].forEach(evt => {
-      document.addEventListener(evt, function autoplayOnInteract() {
-        if (audio.paused) startPlay();
-        document.removeEventListener(evt, autoplayOnInteract);
-      }, { once: true });
-    });
+    // Also try immediate autoplay
+    tryPlay();
 
     player.addEventListener('click', (e) => {
       e.stopPropagation();
+      interacted = true;
       if (audio.paused) {
-        startPlay();
+        tryPlay();
       } else {
         audio.pause();
-        player.classList.remove('playing');
-        iconPlay.style.display = 'block';
-        iconPause.style.display = 'none';
-        label.textContent = 'AMBIENT';
+        setPlaying(false);
       }
     });
   </script>
