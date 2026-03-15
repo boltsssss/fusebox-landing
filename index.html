@@ -1013,7 +1013,13 @@
     const iconPlay = document.getElementById('iconPlay');
     const iconPause = document.getElementById('iconPause');
     const label = document.getElementById('ambientLabel');
-    audio.currentTime = 244; // start at 4:04
+    const START = 244; // 4:04
+    const END = 280;   // 4:40
+
+    audio.addEventListener('loadedmetadata', () => { audio.currentTime = START; });
+    audio.addEventListener('timeupdate', () => {
+      if (audio.currentTime >= END) { audio.currentTime = START; }
+    });
 
     player.addEventListener('click', () => {
       if (audio.paused) {
