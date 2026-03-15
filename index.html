@@ -728,6 +728,7 @@
       gap: 10px;
       animation: splashPulse 2s ease-in-out infinite;
     }
+    .splash-word .cursor { color: #F97316; animation: splashPulse 0.8s step-end infinite; }
     .splash-enter::after {
       content: '→';
       color: #F97316;
@@ -743,8 +744,8 @@
 
   <!-- Splash Screen -->
   <div id="splash">
-    <div class="splash-word">FUSE<span>BOX</span></div>
-    <div class="splash-enter">Enter Site</div>
+    <div class="splash-word" id="splash-word"></div>
+    <div class="splash-enter" id="splash-enter" style="opacity:0">Enter Site</div>
   </div>
 
 
@@ -1110,6 +1111,29 @@
     });
   </script>
   <script>
+    // Splash typewriter
+    const splashWord = document.getElementById('splash-word');
+    const splashEnter = document.getElementById('splash-enter');
+    const fullText = 'FUSEBOX';
+    let idx = 0;
+
+    function typeSplash() {
+      if (idx <= fullText.length) {
+        const typed = fullText.slice(0, idx);
+        const fuse = typed.slice(0, 4);
+        const box = typed.slice(4);
+        splashWord.innerHTML = fuse + (box ? '<span>' + box + '</span>' : '') + (idx < fullText.length ? '<span class="cursor">_</span>' : '');
+        idx++;
+        setTimeout(typeSplash, idx === 1 ? 400 : 100);
+      } else {
+        // Remove cursor, fade in Enter Site
+        splashWord.innerHTML = 'FUSE<span>BOX</span>';
+        splashEnter.style.transition = 'opacity 0.6s';
+        splashEnter.style.opacity = '1';
+      }
+    }
+    setTimeout(typeSplash, 300);
+
     const splash = document.getElementById('splash');
     splash.addEventListener('click', () => {
       splash.classList.add('fade-out');
