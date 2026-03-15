@@ -1016,18 +1016,40 @@
     const START = 244; // 4:04
     const END = 280;   // 4:40
 
-    audio.addEventListener('loadedmetadata', () => { audio.currentTime = START; });
+    audio.addEventListener('loadedmetadata', () => {
+      audio.currentTime = START;
+      console.log('Audio loaded, duration:', audio.duration, 'start:', START);
+    });
     audio.addEventListener('timeupdate', () => {
-      if (audio.currentTime >= END) { audio.currentTime = START; }
+      if (audio.currentTime >= END || audio.currentTime < START - 1) {
+        audio.currentTime = START;
+      }
     });
 
-    player.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.play();
+    function startPlay() {
+      audio.play().then(() => {
         player.classList.add('playing');
         iconPlay.style.display = 'none';
         iconPause.style.display = 'block';
         label.textContent = 'PLAYING';
+      }).catch(() => {});
+    }
+
+    // Try autoplay immediately; if blocked, start on first interaction
+    window.addEventListener('load', () => {
+      startPlay();
+    });
+    ['click','scroll','keydown','touchstart'].forEach(evt => {
+      document.addEventListener(evt, function autoplayOnInteract() {
+        if (audio.paused) startPlay();
+        document.removeEventListener(evt, autoplayOnInteract);
+      }, { once: true });
+    });
+
+    player.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (audio.paused) {
+        startPlay();
       } else {
         audio.pause();
         player.classList.remove('playing');
