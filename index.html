@@ -650,6 +650,46 @@
     .pipe-connector.active {
       border-color: rgba(249,115,22,0.6) !important;
     }
+
+    /* ── AMBIENT PLAYER ── */
+    .ambient-player {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(26,25,22,0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(240,237,232,0.1);
+      border-radius: 999px;
+      padding: 10px 16px 10px 12px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .ambient-player:hover { border-color: rgba(240,237,232,0.25); }
+    .ambient-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(249,115,22,0.15);
+      border: 1px solid rgba(249,115,22,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .ambient-btn svg { width: 12px; height: 12px; fill: #F97316; }
+    .ambient-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: rgba(240,237,232,0.45);
+      white-space: nowrap;
+    }
+    .ambient-player.playing .ambient-label { color: rgba(249,115,22,0.8); }
+    .ambient-player.playing .ambient-btn { background: rgba(249,115,22,0.25); }
   </style>
 </head>
 <body>
@@ -954,6 +994,42 @@
     if (subline) subline.style.opacity = '0';
     if (actions) actions.style.opacity = '0';
     setTimeout(typeHeadline, 600);
+  </script>
+
+  <!-- Ambient Audio Player -->
+  <div class="ambient-player" id="ambientPlayer" title="Ambient music">
+    <div class="ambient-btn" id="ambientBtn">
+      <svg id="iconPlay" viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg>
+      <svg id="iconPause" viewBox="0 0 10 12" style="display:none"><rect x="0" y="0" width="3.5" height="12"/><rect x="6.5" y="0" width="3.5" height="12"/></svg>
+    </div>
+    <span class="ambient-label" id="ambientLabel">AMBIENT</span>
+  </div>
+  <audio id="ambientAudio" loop>
+    <source src="ambient.mp3" type="audio/mpeg">
+  </audio>
+  <script>
+    const audio = document.getElementById('ambientAudio');
+    const player = document.getElementById('ambientPlayer');
+    const iconPlay = document.getElementById('iconPlay');
+    const iconPause = document.getElementById('iconPause');
+    const label = document.getElementById('ambientLabel');
+    audio.currentTime = 120; // start at 2:00
+
+    player.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        player.classList.add('playing');
+        iconPlay.style.display = 'none';
+        iconPause.style.display = 'block';
+        label.textContent = 'PLAYING';
+      } else {
+        audio.pause();
+        player.classList.remove('playing');
+        iconPlay.style.display = 'block';
+        iconPause.style.display = 'none';
+        label.textContent = 'AMBIENT';
+      }
+    });
   </script>
 </body>
 </html>
