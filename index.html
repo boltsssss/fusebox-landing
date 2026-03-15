@@ -1018,36 +1018,40 @@
       label.textContent = active ? 'PLAYING' : 'AMBIENT';
     }
 
-    function tryPlay() {
-      audio.play().then(() => setPlaying(true)).catch(() => {});
+    // Force muted play immediately (browsers allow muted autoplay)
+    audio.muted = true;
+    audio.play().catch(() => {});
+
+    function setPlaying(active) {
+      player.classList.toggle('playing', active);
+      iconPlay.style.display = active ? 'none' : 'block';
+      iconPause.style.display = active ? 'block' : 'none';
+      label.textContent = active ? 'PLAYING' : 'AMBIENT';
     }
 
-    // Reflect initial autoplay state
-    audio.addEventListener('play', () => setPlaying(true));
+    audio.addEventListener('play', () => { if (!audio.muted) setPlaying(true); });
     audio.addEventListener('pause', () => setPlaying(false));
 
-    // Unmute on first interaction
+    // Unmute on first real interaction
     let unmuted = false;
-    function onInteract() {
-      if (!unmuted) {
-        unmuted = true;
-        audio.muted = false;
-        audio.play().then(() => setPlaying(true)).catch(() => {});
-      }
+    function unmute() {
+      if (unmuted) return;
+      unmuted = true;
+      audio.muted = false;
+      if (audio.paused) audio.play().catch(() => {});
+      setPlaying(true);
     }
-    // Use reliable gesture events — click, scroll, touch
-    document.addEventListener('click', onInteract);
-    document.addEventListener('scroll', onInteract);
-    document.addEventListener('touchstart', onInteract);
-    // mousemove only on desktop after a small delay (feels more immediate)
-    setTimeout(() => {
-      document.addEventListener('mousemove', onInteract, { once: true });
-    }, 300);
+    ['click','scroll','touchstart'].forEach(e => document.addEventListener(e, unmute));
+    setTimeout(() => document.addEventListener('mousemove', unmute, { once: true }), 500);
 
+    // AMBIENT button
     player.addEventListener('click', (e) => {
       e.stopPropagation();
-      triggered = true;
-      if (audio.paused) { tryPlay(); } else { audio.pause(); }
+      unmute();
+      setTimeout(() => {
+        if (!audio.paused) { audio.pause(); setPlaying(false); unmuted = false; }
+        else { audio.play().then(() => setPlaying(true)).catch(() => {}); }
+      }, 50);
     });
   </script>
 </body>
