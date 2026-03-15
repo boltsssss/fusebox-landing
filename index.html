@@ -589,6 +589,34 @@
       border-radius: 2px;
     }
 
+
+    @keyframes pipelineGlow {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+    .pipeline-node.active {
+      background: var(--orange) !important;
+      border-color: var(--orange) !important;
+      box-shadow: 0 0 16px 4px rgba(249,115,22,0.4);
+    }
+    .pipe-node.active .pipe-circle {
+      background: var(--orange);
+      border-color: var(--orange);
+      box-shadow: 0 0 16px 4px rgba(249,115,22,0.4);
+    }
+    .pipe-node.active .pipe-label {
+      color: var(--orange);
+    }
+    .pipe-node.completed .pipe-circle {
+      background: rgba(249,115,22,0.3);
+      border-color: rgba(249,115,22,0.4);
+    }
+    .pipe-node.completed .pipe-label {
+      color: rgba(249,115,22,0.5);
+    }
+    .pipe-connector.active {
+      border-color: rgba(249,115,22,0.6) !important;
+    }
   </style>
 </head>
 <body>
@@ -821,5 +849,42 @@
     </div>
   </footer>
 
+
+  <script>
+    // Pipeline animation
+    const stages = document.querySelectorAll('.pipe-node');
+    const connectors = document.querySelectorAll('.pipe-connector');
+    let currentStage = 0;
+
+    function animatePipeline() {
+      stages.forEach((s, i) => {
+        s.classList.remove('active', 'completed');
+        if (i < currentStage) s.classList.add('completed');
+        if (i === currentStage) s.classList.add('active');
+      });
+      connectors.forEach((c, i) => {
+        c.classList.toggle('active', i < currentStage);
+      });
+      currentStage = (currentStage + 1) % (stages.length + 1);
+      if (currentStage === 0) {
+        // Brief pause before restarting
+        setTimeout(animatePipeline, 1200);
+      } else {
+        setTimeout(animatePipeline, 600);
+      }
+    }
+
+    // Start when section is in view
+    const pipelineSection = document.querySelector('.pipeline');
+    if (pipelineSection) {
+      const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          animatePipeline();
+          observer.disconnect();
+        }
+      }, { threshold: 0.3 });
+      observer.observe(pipelineSection);
+    }
+  </script>
 </body>
 </html>
