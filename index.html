@@ -1004,22 +1004,14 @@
     </div>
     <span class="ambient-label" id="ambientLabel">AMBIENT</span>
   </div>
-  <audio id="ambientAudio" preload="auto">
-    <source src="ambient.mp3" type="audio/mpeg">
-  </audio>
+  <audio id="ambientAudio" src="ambient-clip.mp3" preload="auto"></audio>
   <script>
     const audio = document.getElementById('ambientAudio');
     const player = document.getElementById('ambientPlayer');
     const iconPlay = document.getElementById('iconPlay');
     const iconPause = document.getElementById('iconPause');
     const label = document.getElementById('ambientLabel');
-    const START = 244; // 4:04
-    const END = 280;   // 4:40
-    let seeked = false;
-    let playing = false;
-
     function setPlaying(active) {
-      playing = active;
       player.classList.toggle('playing', active);
       iconPlay.style.display = active ? 'none' : 'block';
       iconPause.style.display = active ? 'block' : 'none';
@@ -1027,53 +1019,21 @@
     }
 
     function tryPlay() {
-      if (!seeked) {
-        audio.currentTime = START;
-      }
       audio.play().then(() => setPlaying(true)).catch(() => {});
     }
 
-    audio.addEventListener('canplay', () => {
-      if (!seeked) {
-        audio.currentTime = START;
-        seeked = true;
-      }
-    });
-
-    audio.addEventListener('seeked', () => {
-      seeked = true;
-    });
-
-    audio.addEventListener('timeupdate', () => {
-      if (seeked && audio.currentTime >= END) {
-        audio.currentTime = START;
-      }
-    });
-
-    // Autoplay on first interaction since browsers block direct autoplay
-    let interacted = false;
-    function onFirstInteract() {
-      if (!interacted) {
-        interacted = true;
-        tryPlay();
-      }
+    // Autoplay on first interaction
+    let triggered = false;
+    function onInteract() {
+      if (!triggered) { triggered = true; tryPlay(); }
     }
-    ['click','scroll','touchstart','keydown'].forEach(e => {
-      document.addEventListener(e, onFirstInteract, { once: false });
-    });
-
-    // Also try immediate autoplay
-    tryPlay();
+    ['click','scroll','touchstart'].forEach(e => document.addEventListener(e, onInteract));
+    tryPlay(); // attempt immediate autoplay
 
     player.addEventListener('click', (e) => {
       e.stopPropagation();
-      interacted = true;
-      if (audio.paused) {
-        tryPlay();
-      } else {
-        audio.pause();
-        setPlaying(false);
-      }
+      triggered = true;
+      if (audio.paused) { tryPlay(); } else { audio.pause(); setPlaying(false); }
     });
   </script>
 </body>
