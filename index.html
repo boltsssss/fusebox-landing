@@ -690,9 +690,64 @@
     }
     .ambient-player.playing .ambient-label { color: rgba(249,115,22,0.8); }
     .ambient-player.playing .ambient-btn { background: rgba(249,115,22,0.25); }
+
+    /* ── SPLASH SCREEN ── */
+    #splash {
+      position: fixed;
+      inset: 0;
+      background: #0f0e0c;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      cursor: pointer;
+      transition: opacity 0.8s ease;
+    }
+    #splash.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .splash-word {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(32px, 6vw, 72px);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #f0ede8;
+    }
+    .splash-word span { color: #F97316; }
+    .splash-enter {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(240,237,232,0.35);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: splashPulse 2s ease-in-out infinite;
+    }
+    .splash-enter::after {
+      content: '→';
+      color: #F97316;
+      font-size: 14px;
+    }
+    @keyframes splashPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Splash Screen -->
+  <div id="splash">
+    <div class="splash-word">FUSE<span>BOX</span></div>
+    <div class="splash-enter">Enter Site</div>
+  </div>
+
+
 
   <!-- NAV -->
   <nav>
@@ -1052,6 +1107,27 @@
         if (!audio.paused) { audio.pause(); setPlaying(false); unmuted = false; }
         else { audio.play().then(() => setPlaying(true)).catch(() => {}); }
       }, 50);
+    });
+  </script>
+  <script>
+    const splash = document.getElementById('splash');
+    splash.addEventListener('click', () => {
+      splash.classList.add('fade-out');
+      setTimeout(() => splash.remove(), 900);
+      // Start audio
+      const a = document.getElementById('ambientAudio');
+      a.muted = false;
+      a.play().catch(() => {});
+      const player = document.getElementById('ambientPlayer');
+      const iconPlay = document.getElementById('iconPlay');
+      const iconPause = document.getElementById('iconPause');
+      const label = document.getElementById('ambientLabel');
+      if (player) {
+        player.classList.add('playing');
+        if (iconPlay) iconPlay.style.display = 'none';
+        if (iconPause) iconPause.style.display = 'block';
+        if (label) label.textContent = 'PLAYING';
+      }
     });
   </script>
 </body>
