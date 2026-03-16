@@ -23,6 +23,7 @@
     html { scroll-behavior: smooth; }
 
     body {
+      overflow-x: hidden;
       background: var(--bg);
       color: var(--text);
       font-family: 'Inter', sans-serif;
@@ -208,6 +209,7 @@
     }
 
     .section-body {
+      overflow-x: hidden;
       font-family: 'Inter', sans-serif;
       font-size: clamp(14px, 1.6vw, 16px);
       color: var(--muted);
@@ -1006,62 +1008,5 @@
     if (actions) actions.style.opacity = '0';
     setTimeout(typeHeadline, 600);
   </script>
-
-  <!-- Ambient Audio Player -->
-  <div class="ambient-player" id="ambientPlayer" title="Ambient music">
-    <div class="ambient-btn" id="ambientBtn">
-      <svg id="iconPlay" viewBox="0 0 10 12"><polygon points="0,0 10,6 0,12"/></svg>
-      <svg id="iconPause" viewBox="0 0 10 12" style="display:none"><rect x="0" y="0" width="3.5" height="12"/><rect x="6.5" y="0" width="3.5" height="12"/></svg>
-    </div>
-    <span class="ambient-label" id="ambientLabel">AMBIENT</span>
-  </div>
-  <script>
-    const audio = document.getElementById('ambientAudio');
-    const player = document.getElementById('ambientPlayer');
-    const iconPlay = document.getElementById('iconPlay');
-    const iconPause = document.getElementById('iconPause');
-    const label = document.getElementById('ambientLabel');
-    function setPlaying(active) {
-      player.classList.toggle('playing', active);
-      iconPlay.style.display = active ? 'none' : 'block';
-      iconPause.style.display = active ? 'block' : 'none';
-      label.textContent = active ? 'PLAYING' : 'AMBIENT';
-    }
-
-    // Force muted play immediately (browsers allow muted autoplay)
-    audio.muted = true;
-    audio.play().catch(() => {});
-
-    function setPlaying(active) {
-      player.classList.toggle('playing', active);
-      iconPlay.style.display = active ? 'none' : 'block';
-      iconPause.style.display = active ? 'block' : 'none';
-      label.textContent = active ? 'PLAYING' : 'AMBIENT';
-    }
-
-    audio.addEventListener('play', () => { if (!audio.muted) setPlaying(true); });
-    audio.addEventListener('pause', () => setPlaying(false));
-
-    // Unmute on first real interaction
-    let unmuted = false;
-    function unmute() {
-      if (unmuted) return;
-      unmuted = true;
-      audio.muted = false;
-      if (audio.paused) audio.play().catch(() => {});
-      setPlaying(true);
-    }
-    ['click','scroll','touchstart'].forEach(e => document.addEventListener(e, unmute));
-    setTimeout(() => document.addEventListener('mousemove', unmute, { once: true }), 500);
-
-    // AMBIENT button
-    player.addEventListener('click', (e) => {
-      e.stopPropagation();
-      unmute();
-      setTimeout(() => {
-        if (!audio.paused) { audio.pause(); setPlaying(false); unmuted = false; }
-        else { audio.play().then(() => setPlaying(true)).catch(() => {}); }
-      }, 50);
-    });
-  </script></body>
+</body>
 </html>
