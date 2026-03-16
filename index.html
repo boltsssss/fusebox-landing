@@ -652,46 +652,6 @@
       border-color: rgba(249,115,22,0.6) !important;
     }
 
-    /* ── AMBIENT PLAYER ── */
-    .ambient-player {
-      position: fixed;
-      bottom: 28px;
-      right: 28px;
-      z-index: 999;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(26,25,22,0.85);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(240,237,232,0.1);
-      border-radius: 999px;
-      padding: 10px 16px 10px 12px;
-      cursor: pointer;
-      transition: border-color 0.2s;
-    }
-    .ambient-player:hover { border-color: rgba(240,237,232,0.25); }
-    .ambient-btn {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: rgba(249,115,22,0.15);
-      border: 1px solid rgba(249,115,22,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .ambient-btn svg { width: 12px; height: 12px; fill: #F97316; }
-    .ambient-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      color: rgba(240,237,232,0.45);
-      white-space: nowrap;
-    }
-    .ambient-player.playing .ambient-label { color: rgba(249,115,22,0.8); }
-    .ambient-player.playing .ambient-btn { background: rgba(249,115,22,0.25); }
-
     /* ── SPLASH SCREEN ── */
     #splash {
       position: fixed;
@@ -742,12 +702,6 @@
   </style>
 </head>
 <body>
-
-  <!-- Splash Screen -->
-  <div id="splash">
-    <div class="splash-word" id="splash-word"></div>
-    <div class="splash-enter" id="splash-enter" style="opacity:0">Enter Site</div>
-  </div>
 
 
 
@@ -1061,7 +1015,6 @@
     </div>
     <span class="ambient-label" id="ambientLabel">AMBIENT</span>
   </div>
-  <audio id="ambientAudio" src="ambient-clip.mp3" preload="auto" autoplay loop muted></audio>
   <script>
     const audio = document.getElementById('ambientAudio');
     const player = document.getElementById('ambientPlayer');
@@ -1110,50 +1063,5 @@
         else { audio.play().then(() => setPlaying(true)).catch(() => {}); }
       }, 50);
     });
-  </script>
-  <script>
-    // Splash typewriter
-    const splashWord = document.getElementById('splash-word');
-    const splashEnter = document.getElementById('splash-enter');
-    const fullText = 'FUSEBOX';
-    let idx = 0;
-
-    function typeSplash() {
-      if (idx <= fullText.length) {
-        const typed = fullText.slice(0, idx);
-        const fuse = typed.slice(0, 4);
-        const box = typed.slice(4);
-        splashWord.innerHTML = fuse + (box ? '<span>' + box + '</span>' : '') + (idx < fullText.length ? '<span class="cursor">_</span>' : '');
-        idx++;
-        setTimeout(typeSplash, idx === 1 ? 400 : 100);
-      } else {
-        // Remove cursor, fade in Enter Site
-        splashWord.innerHTML = 'FUSE<span>BOX</span>';
-        splashEnter.style.transition = 'opacity 0.6s';
-        splashEnter.style.opacity = '1';
-      }
-    }
-    setTimeout(typeSplash, 300);
-
-    const splash = document.getElementById('splash');
-    splash.addEventListener('click', () => {
-      splash.classList.add('fade-out');
-      setTimeout(() => splash.remove(), 900);
-      // Start audio
-      const a = document.getElementById('ambientAudio');
-      a.muted = false;
-      a.play().catch(() => {});
-      const player = document.getElementById('ambientPlayer');
-      const iconPlay = document.getElementById('iconPlay');
-      const iconPause = document.getElementById('iconPause');
-      const label = document.getElementById('ambientLabel');
-      if (player) {
-        player.classList.add('playing');
-        if (iconPlay) iconPlay.style.display = 'none';
-        if (iconPause) iconPause.style.display = 'block';
-        if (label) label.textContent = 'PLAYING';
-      }
-    });
-  </script>
-</body>
+  </script></body>
 </html>
